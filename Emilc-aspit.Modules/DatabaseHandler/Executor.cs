@@ -11,6 +11,11 @@ namespace DatabaseHandler
     {
         protected readonly string connectionString = "";
 
+        /// <summary>
+        /// Return data from table with a sqlQuery
+        /// </summary>
+        /// <param name="sqlQuery">the command you want</param>
+        /// <returns>DataSet</returns>
         public DataSet Execute(string sqlQuery)
         {
             try
@@ -35,6 +40,12 @@ namespace DatabaseHandler
             catch (SqlException) { throw; }
         }
 
+        /// <summary>
+        /// Executes a stored proecedure with parameters
+        /// </summary>
+        /// <param name="storedProcedureName">The name of the stored procedure </param>
+        /// <param name="procedureParameters">The parameters for the stored procedure</param>
+        /// <returns></returns>
         public DataSet Execute(string storedProcedureName, params string[] procedureParameters)
         {
             try
@@ -63,10 +74,22 @@ namespace DatabaseHandler
                 throw;
             }
         }
-
+        /// <summary>
+        /// Takes the name and sends if to the getConnectionString Function
+        /// </summary>
+        /// <param name="name"></param>
         public Executor(string name)
         {
-            connectionString = ConfigurationManager.GetConnectionString(@"config\ConnectionPath.config",  $"{name}");
+            string mapname = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Config";
+            try
+            {
+                connectionString = ConfigurationManager.GetConnectionString(mapname, name);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }
