@@ -64,9 +64,9 @@ namespace DatabaseHandler
             }
         }
 
-        public Executor()
+        public Executor(string name)
         {
-            connectionString = ConfigurationManager.GetConnectionString(@"config\ConnectionPath.config", "ABC Boliger A/S");
+            connectionString = ConfigurationManager.GetConnectionString(@"config\ConnectionPath.config",  $"{name}");
         }
     }
 }
