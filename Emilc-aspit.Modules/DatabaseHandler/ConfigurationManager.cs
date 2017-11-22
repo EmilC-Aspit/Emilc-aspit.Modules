@@ -14,7 +14,7 @@ namespace DatabaseHandler
         /// <param name="path">The path is set to my documents</param>
         /// <param name="name">Name of the database you want to connect to</param>
         /// <returns></returns>
-        public static string GetConnectionString(string path, string name)
+        public static string GetConnectionString(string path, string name = null)
         {
             string nnn = @"\ConnectionPath.config";
             if(!Directory.Exists(path))

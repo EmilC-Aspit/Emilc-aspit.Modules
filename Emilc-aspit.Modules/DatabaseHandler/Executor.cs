@@ -45,18 +45,50 @@ namespace DatabaseHandler
         /// </summary>
         /// <param name="storedProcedureName">The name of the stored procedure </param>
         /// <param name="procedureParameters">The parameters for the stored procedure</param>
-        /// <returns></returns>
+        /// <returns>Datset from DB</returns>
         public DataSet Execute(string storedProcedureName, params string[] procedureParameters)
         {
             try
             {
+                string sqlQuery = $"select * from information_schema.parameters where specific_name = '{storedProcedureName}'";
+                List<string> test = new List<string>();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                    {
+                        connection.Open();
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            DataSet set = new DataSet();
+                            adapter.Fill(set);
+                            connection.Close();
+                            DataTableReader reader = set.CreateDataReader();
+                            while (reader.Read())
+                            {
+                                string paramName = reader["PARAMETER_NAME"].ToString();
+                                test.Add(paramName);
+                            }
+                        }
+
+                    }
+                }
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     using (SqlCommand command = new SqlCommand(storedProcedureName, conn))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        if (test.Count > 1)
+                        {
+                            for (int i = 0; i < test.Count; i++)
+                            {
+                                command.Parameters.AddWithValue(test[i], procedureParameters[i]);
+                            }
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue(test[0], procedureParameters[0]);
+                        }
 
-                        command.Parameters.Add(procedureParameters);
                         conn.Open();
                         using (SqlDataAdapter adpater = new SqlDataAdapter())
                         {
