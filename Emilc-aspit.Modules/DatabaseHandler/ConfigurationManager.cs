@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.IO;
 namespace DatabaseHandler
 {
+    /// <summary>
+    /// The class handles getting the connectionString from the configFile
+    /// </summary>
     public static class ConfigurationManager
     {
         /// <summary>

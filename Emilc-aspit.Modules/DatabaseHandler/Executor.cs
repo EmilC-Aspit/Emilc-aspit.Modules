@@ -7,8 +7,14 @@ using System.Data;
 using System.Data.SqlClient;
 namespace DatabaseHandler
 {
+    /// <summary>
+    /// The class handles all the callings to the database
+    /// </summary>
     public class Executor
     {
+        /// <summary>
+        /// the connection string
+        /// </summary>
         protected readonly string connectionString = "";
 
         /// <summary>

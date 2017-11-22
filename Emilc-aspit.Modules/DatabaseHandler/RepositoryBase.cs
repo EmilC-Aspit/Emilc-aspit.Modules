@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace DatabaseHandler
 {
+    /// <summary>
+    /// The class name and the class it inherts from
+    /// </summary>
     public class RepositoryBase : Executor
     {
+        /// <summary>
+        /// The call field to the other classes
+        /// </summary>
         protected Executor executor;
 
         /// <summary>
