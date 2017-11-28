@@ -2,12 +2,9 @@
 <package >
   <metadata>
     <id>MyPackage</id>
-    <version>1.0.0</version>
+    <version>1.0.3</version>
     <authors>emil055f</authors>
     <owners>emil055f</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
-    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This is a test nugget</description>
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
@@ -16,5 +13,6 @@
   </metadata>
   <files>
     <file src="DatabaseHandler\bin\Debug\DatabaseHandler.dll" target="lib"></file>
+    <file src="DatabaseHandler\bin\Debug\DatabaseHandler.xml" target="lib"></file>
   </files>
 </package>

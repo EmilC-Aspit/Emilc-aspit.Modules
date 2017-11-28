@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("FunkyUnitTest")]
 namespace DatabaseHandler
 {
     /// <summary>
@@ -13,7 +16,7 @@ namespace DatabaseHandler
     public class Executor
     {
         /// <summary>
-        /// the connection string
+        /// Connectionstring for the database
         /// </summary>
         protected readonly string connectionString = "";
 
@@ -26,7 +29,6 @@ namespace DatabaseHandler
         {
             try
             {
-
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -83,26 +85,33 @@ namespace DatabaseHandler
                     using (SqlCommand command = new SqlCommand(storedProcedureName, conn))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        if (test.Count > 1)
                         {
-                            for (int i = 0; i < test.Count; i++)
+                            command.CommandType = CommandType.StoredProcedure;
+                            if (test.Count < procedureParameters.Length)
                             {
-                                command.Parameters.AddWithValue(test[i], procedureParameters[i]);
+                                throw new DontBeStupidException("you have to many parameters");
                             }
-                        }
-                        else
-                        {
-                            command.Parameters.AddWithValue(test[0], procedureParameters[0]);
-                        }
+                            if (test.Count > procedureParameters.Length)
+                            {
+                                throw new DontBeStupidException("you have to few parameters");
+                            }
+                            if (test.Count == procedureParameters.Length)
+                            {
+                                for (int i = 0; i < test.Count; i++)
+                                {
+                                    command.Parameters.AddWithValue(test[i], procedureParameters[i]);
+                                }
+                            }
 
-                        conn.Open();
-                        using (SqlDataAdapter adpater = new SqlDataAdapter())
-                        {
-                            adpater.SelectCommand = command;
-                            DataSet set = new DataSet();
-                            adpater.Fill(set);
-                            conn.Close();
-                            return set;
+                            conn.Open();
+                            using (SqlDataAdapter adpater = new SqlDataAdapter())
+                            {
+                                adpater.SelectCommand = command;
+                                DataSet set = new DataSet();
+                                adpater.Fill(set);
+                                conn.Close();
+                                return set;
+                            }
                         }
                     }
                 }
@@ -111,23 +120,28 @@ namespace DatabaseHandler
             {
                 throw;
             }
-        }
-        /// <summary>
-        /// Takes the name and sends if to the getConnectionString Function
-        /// </summary>
-        /// <param name="name"></param>
-        public Executor(string name)
-        {
-            string mapname = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Config";
-            try
-            {
-                connectionString = ConfigurationManager.GetConnectionString(mapname, name);
-            }
-            catch (Exception)
+            catch(Exception)
             {
                 throw;
             }
-
+        }
+        /// <summary>
+        /// A constructor that sends the name to the GetConnectionString function
+        /// </summary>
+        internal Executor(string connectionString)
+        {
+            this.connectionString = connectionString;
+            try
+            {
+                SqlConnection conn = new SqlConnection(this.connectionString);
+                conn.Open();
+                conn.Close();
+            }
+            catch(SqlException)
+            {
+                throw;
+            }
+            
         }
     }
 }

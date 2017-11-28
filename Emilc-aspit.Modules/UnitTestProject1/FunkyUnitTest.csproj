@@ -53,9 +53,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DatabaseHandler\DatabaseHandler.csproj">
       <Project>{177cd869-ddc4-4d3c-b63f-80e5381cf28b}</Project>
       <Name>DatabaseHandler</Name>

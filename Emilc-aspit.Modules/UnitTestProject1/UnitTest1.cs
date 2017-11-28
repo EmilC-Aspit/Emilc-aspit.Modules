@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DatabaseHandler;
 using System.Data;
-namespace UnitTestProject1
+namespace FunkyUnitTest
 {
     [TestClass]
     public class UnitTest1
@@ -10,21 +10,20 @@ namespace UnitTestProject1
         [TestMethod]
         public void Test_StoredProcedure_1Param()
         {
-            RepositoryBase repository = new RepositoryBase("Tst");
+            RepositoryBase repository = new RepositoryBase("Tst", @"C:\Users\emil055f\Documents\Config\ConnectionPath.config");
             DataSet expected = new DataSet();
 
-            
-            var RealAmount  = repository.Execute("createPerson", "INSERT INTO Memes(Name) VALUES ('Jek')");
+            DataSet real = repository.Execute("SELECT * FROM Memes");
 
-            Assert.AreNotEqual(expected, repository);
+            Assert.AreNotEqual(expected, real);
         }
         [TestMethod]
         public void Test_StoredProcedure_2Param()
         {
-            RepositoryBase repository = new RepositoryBase("Tst");
+            RepositoryBase repository = new RepositoryBase("Tst", @"C:\Users\emil055f\Documents\Config\ConnectionPath.config");
             DataSet expected = new DataSet();
 
-            DataSet realamount = repository.Execute("TestPerson", "Morten", "Jens");
+            DataSet realamount = repository.executor.Execute("TestPerson", "Morten", "Jens");
 
             Assert.AreNotEqual(expected, realamount);
         }
@@ -32,10 +31,10 @@ namespace UnitTestProject1
         [TestMethod]
         public void Test_SqlQuery()
         {
-            RepositoryBase repository = new RepositoryBase("Tst");
+            RepositoryBase repository = new RepositoryBase("Tst", @"C:\Users\emil055f\Documents\Config\ConnectionPath.config");
             DataSet exptected = new DataSet();
 
-            DataSet realAmount = repository.Execute("SELECT * FROM Memes");
+            DataSet realAmount = repository.executor.Execute("SELECT * FROM Memes");
 
             Assert.AreNotEqual(exptected, realAmount);
         }
